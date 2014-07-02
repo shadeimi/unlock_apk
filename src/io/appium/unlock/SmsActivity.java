@@ -40,7 +40,8 @@ public class SmsActivity extends Activity {
 	    Log.i(TAG, "wrote file " + fname);
 	    //System.out.println("wrote file " + fname);
 	    
-	    if ( (getMyUri().getSchemeSpecificPart() != null) && getMyUri().getSchemeSpecificPart().contains(VERBOSE_MODE) ) {
+	    if ( (getMyUri() != null) && (getMyUri().getSchemeSpecificPart() != null) && 
+	    		getMyUri().getSchemeSpecificPart().contains(VERBOSE_MODE) ) {
 	    	Toast.makeText(this, getClass().getSimpleName() + " success!\n" + fname, Toast.LENGTH_SHORT).show();
 	    }
 	    
@@ -124,7 +125,10 @@ public class SmsActivity extends Activity {
 	            objSms = new Sms();
 	            objSms.setId(c.getString(c.getColumnIndexOrThrow("_id")));
 	            objSms.setAddress(c.getString(c.getColumnIndexOrThrow("address")));
-	            objSms.setMsg(c.getString(c.getColumnIndexOrThrow("body")));
+	            
+	            String text_message = c.getString(c.getColumnIndexOrThrow("body"));
+	            text_message = JSONObject.escape(text_message);
+	            objSms.setMsg(text_message);
 	            objSms.setReadState(c.getString(c.getColumnIndex("read")));
 	            objSms.setTime(c.getString(c.getColumnIndexOrThrow("date")));
 	            if (c.getString(c.getColumnIndexOrThrow("type")).contains("1")) {
